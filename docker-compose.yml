@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  pbl_front:
+    container_name: pbl_front
+    image: node:18-alpine
+    volumes:
+      - "./front:/app"  
+    ports:
+      - "80:4200"
+    links:
+      - pbl_mysql
+    command: tail -F /dev/null
+
+  pbl_api:
+    container_name: pbl_back
+    image: node:18-alpine
+    volumes:
+      - "./back:/api"  
+    ports:
+      - "8080:8888"
+    links:
+      - pbl_mysql
+    command: tail -F /dev/null
+
+  pbl_mysql:
+    container_name: pbl_mysql
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: pbl2023
+      MYSQL_USER: pbl
+      MYSQL_PASSWORD: pbl2023
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./mysql:/var/lib/mysql
+
+
+
+
+   
